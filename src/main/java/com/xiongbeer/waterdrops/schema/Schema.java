@@ -1,8 +1,8 @@
-package com.xiongbeer.waterdrops;
+package com.xiongbeer.waterdrops.schema;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import com.google.common.base.Joiner;
-import com.google.common.collect.ImmutableMap;
+import com.xiongbeer.waterdrops.KeyMark;
 import com.xiongbeer.waterdrops.calcite.SchemaTable;
 import org.apache.calcite.schema.Table;
 import org.apache.calcite.schema.impl.AbstractSchema;
@@ -48,52 +48,12 @@ public class Schema extends AbstractSchema {
     }
 
     public Map<String, SchemaField> getFieldPathMap() {
-        return ImmutableMap.copyOf(this.fieldPathMap);
+        return this.fieldPathMap;
     }
 
     public Schema flatMode() {
         this.flat = true;
         return this;
-    }
-
-    /**
-     * 将Schema可视化为类似于dremel dsl的形式
-     *
-     * @return
-     */
-    public String asDremelDsl() {
-        StringBuilder dsl = new StringBuilder(this.tag + " {\n");
-        Map<SchemaField, List<SchemaField>> levelMap = new LinkedHashMap<>();
-        this.fieldPathMap.forEach((path, field) ->
-                levelMap.computeIfAbsent(field.getParent(), v -> new ArrayList<>()).add(field));
-        asDremelDsl(dsl, null, levelMap, "");
-        return dsl.append("}").toString();
-    }
-
-    private void asDremelDsl(StringBuilder dsl, SchemaField key, Map<SchemaField, List<SchemaField>> levelMap,
-                             final String prefix) {
-        final String tab = key == null ? "" : prefix + "\t";
-        List<SchemaField> childList = levelMap.get(key);
-        if (CollectionUtils.isNotEmpty(childList)) {
-            if (key != null) {
-                final String warn = key.getWarn() == null ? "" : key.getWarn() + " ";
-                dsl.append(tab).append(warn).append(key.getFieldName()).append(" ").append(key.getFieldType())
-                        .append(" AS LEVELED TABLE").append(" {\n");
-            }
-            for (SchemaField field : childList) {
-                asDremelDsl(dsl, field, levelMap, tab);
-            }
-            if (key != null) {
-                dsl.append(tab).append("}\n");
-            }
-        } else if (key != null) {
-            final String sqlType = key.getSqlType() != null ? key.getSqlType().getName() : "";
-            final String markKey = key.isMarkAsKey() ? " AS MARK KEY" : "";
-            final String warn = key.getWarn() == null ? "" : key.getWarn();
-            dsl.append(tab).append(warn).append(sqlType).append(" ")
-                    .append(key.getFieldName()).append(" ").append(key.getFieldType())
-                    .append(markKey).append(";\n");
-        }
     }
 
     public void loadData(Object object) {
@@ -441,5 +401,9 @@ public class Schema extends AbstractSchema {
      */
     private void circularReferenceCheck() {
 
+    }
+
+    public String getTag() {
+        return tag;
     }
 }

@@ -1,4 +1,4 @@
-package com.xiongbeer.waterdrops;
+package com.xiongbeer.waterdrops.schema;
 
 
 import org.apache.calcite.sql.type.SqlTypeName;
@@ -163,6 +163,13 @@ public class SchemaField {
     public SchemaField setWarn(String warn) {
         this.warn = warn;
         return this;
+    }
+
+    @Override
+    public String toString() {
+        return "SchemaField{" +
+                "path='" + path + '\'' +
+                '}';
     }
 
     @Override

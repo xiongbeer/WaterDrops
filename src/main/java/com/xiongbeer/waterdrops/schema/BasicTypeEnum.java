@@ -1,4 +1,4 @@
-package com.xiongbeer.waterdrops;
+package com.xiongbeer.waterdrops.schema;
 
 import org.apache.calcite.sql.type.SqlTypeName;
 import org.apache.commons.lang3.StringUtils;
@@ -6,11 +6,11 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.Date;
 
 public enum BasicTypeEnum {
-    STRING(String.class, "", SqlTypeName.VARCHAR), LONG(Long.class, "", SqlTypeName.BIGINT),
-    SHORT(Short.class, "", SqlTypeName.SMALLINT), INT(Integer.class, "", SqlTypeName.INTEGER),
-    DOUBLE(Double.class, "", SqlTypeName.DOUBLE), FLOAT(Float.class, "", SqlTypeName.FLOAT),
-    BYTE(Byte.class, "", SqlTypeName.TINYINT), CHAR(Character.class, "", SqlTypeName.VARCHAR),
-    BOOLEAN(Boolean.class, "", SqlTypeName.BOOLEAN), TIMESTAMP(Date.class, "", SqlTypeName.VARCHAR),
+    STRING(String.class, "", SqlTypeName.VARCHAR), LONG(Long.class, "long", SqlTypeName.BIGINT),
+    SHORT(Short.class, "short", SqlTypeName.SMALLINT), INT(Integer.class, "int", SqlTypeName.INTEGER),
+    DOUBLE(Double.class, "double", SqlTypeName.DOUBLE), FLOAT(Float.class, "float", SqlTypeName.FLOAT),
+    BYTE(Byte.class, "byte", SqlTypeName.TINYINT), CHAR(Character.class, "char", SqlTypeName.VARCHAR),
+    BOOLEAN(Boolean.class, "boolean", SqlTypeName.BOOLEAN), TIMESTAMP(Date.class, "", SqlTypeName.VARCHAR),
     UNKNOWN(Object.class, "", SqlTypeName.ANY);
 
     private Class<?> clazz;
